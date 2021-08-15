@@ -1,11 +1,13 @@
 class Solution {
     public String minWindow(String s, String t) {
+        // char ar
+        char[] sAr = s.toCharArray();
+        char[] tAr = t.toCharArray();
         // build frequency map of our desired search string; essentially a map via an array
         int[] searchMap = new int[128];
         int searchCount = 0;
 
-        for (int i = 0; i < t.length(); i++) {
-            char c = t.charAt(i);
+        for (char c: tAr) {
             if (searchMap[c] == 0) {
                 searchCount++;
                 searchMap[c] = 1;
@@ -24,7 +26,7 @@ class Solution {
         int left = 0, minLeft = 0, minRight = 0, minLen = Integer.MAX_VALUE;
 
         for (int right = 0; right < s.length(); right++) {
-            char c = s.charAt(right);
+            char c = sAr[right];
             if (searchMap[c] > 0) {
                 resultMap[c] += 1;
 
@@ -64,6 +66,7 @@ class Solution {
         }
         // calculating substring at the end instead of the beginning saves 53ms off of 56ms
         // aka, this is disproportionately expensive
-        return s.substring(minLeft, minRight);
+        // calculating the equivalency instead of always calling substring saves 1ms-ish
+        return minLeft==minRight ? "" : s.substring(minLeft, minRight);
     }
 }
